@@ -4,7 +4,7 @@ import PopulationCounter from "./components/PopulationCounter";
 import ControlPanel from "./components/ControlPanel";
 import EventButtons from "./components/EventButtons";
 import ContinentCircle from "./components/ContinentCircle";
-import { Pause, Play, RotateCcw } from "lucide-react";
+import { Github, Pause, Play, RotateCcw } from "lucide-react";
 
 export default function Home() {
 
@@ -45,10 +45,10 @@ export default function Home() {
 
     <div className="relative z-10 container mx-auto px-4 py-8">
       <header className="text-center mb-10">
-        <h1 className="text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gray-900 drop-shadow-lg">
+        <h1 className="text-5xl mb-8 font-bold bg-clip-text text-transparent bg-gray-900 drop-shadow-lg">
           World Population Simulator
         </h1>
-        <p className="mt-3 text-lg text-gray-800">Real-time demographic simulation</p>
+        <p className="mt-3 text-3xl text-gray-800">Real-time demographic simulation</p>
       </header>
 
       <div className="grid grid-cols-3 gap-8 max-w-7xl mx-auto">
@@ -121,6 +121,13 @@ export default function Home() {
               <RotateCcw className="w-5 h-5 group-hover:rotate-180 transition-transform duration-500" />
               Reset
             </button>
+
+            <div className="text-gray-600 hover:text-purple-600 transition duration-300 font-medium">
+              <a href="https://github.com/tusharathub" target="_blank" >
+              <Github className="text-gray-800 w-13 h-11 mt-2 rounded-xl " />
+              Connect
+              </a>
+            </div>
           </div>
         </div>
       </div>

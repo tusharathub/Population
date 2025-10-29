@@ -31,7 +31,6 @@ function RateInput({label, value, onChange} : RateInputProps) {
             <label className="text-sm text-gray-600 mb-1"> {label} </label>
                 <input 
                 type="number" 
-                step="0.1"
                 value={value}
                 onChange={(e) => onChange(Number(e.target.value))}
                 className="border-gray-800 text-gray-800 rounded-md px-2 py-1 outline-none focus:ring-2 focus:ring-blue-500"
