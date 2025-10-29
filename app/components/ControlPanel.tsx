@@ -17,7 +17,7 @@ interface RateInputProps {
 
 export default function ControlPanel ({birthRate, deathRate, migrationRate, setBirthRate, setDeathRate, setMigrationRate}: Props) {
     return (
-        <div className="bg-gray-500 p-4 rounded-2xl shadow-lg w-64 space-y-3">
+        <div className="bg-gray-100 p-4 rounded-2xl shadow-lg w-64 space-y-3">
             <RateInput label="Birth Rate" value={birthRate} onChange={setBirthRate}/>
             <RateInput label="Death Rate" value={deathRate} onChange={setDeathRate}/>
             <RateInput label="Migration Rate" value={migrationRate} onChange={setMigrationRate}/>
@@ -34,7 +34,7 @@ function RateInput({label, value, onChange} : RateInputProps) {
                 step="0.1"
                 value={value}
                 onChange={(e) => onChange(Number(e.target.value))}
-                className="border-gray-800 text-white rounded-md px-2 py-1 outline-none focus:ring-2 focus:ring-blue-500"
+                className="border-gray-800 text-gray-800 rounded-md px-2 py-1 outline-none focus:ring-2 focus:ring-blue-500"
                 />
         </div>
     )

@@ -33,7 +33,7 @@ function Button({label, onClick} : ButtonProps) {
         <div>
             <button 
             onClick={onClick}
-            className="bg-purple-400 hover:bg-purple-700 rounded-xl px-3 py-2 text-sm font-medium transition">
+            className="bg-gray-200 text-gray-800 hover:bg-zinc-300 rounded-xl px-3 py-2 text-sm font-medium transition">
                 {label}
             </button>
         </div>

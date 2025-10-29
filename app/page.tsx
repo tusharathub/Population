@@ -99,7 +99,7 @@ export default function Home() {
           <div className="flex justify-center gap-4 mt-6">
             <button
               onClick={() => setRunning(!running)}
-              className={"group flex items-center  gap-3 px-8 py-4 rounded-2xl bg-gray-200 text-gray-800 font-semibold text-lg transition-all duration-300 shadow-lg"}
+              className={"group flex items-center gap-3 px-8 py-4 rounded-2xl bg-gray-200 hover:bg-zinc-300 text-gray-800 font-semibold text-lg transition-all duration-300 shadow-lg"}
             >
               {running ? (
                 <>
@@ -116,7 +116,7 @@ export default function Home() {
 
             <button
               onClick={handleReset}
-              className="group flex items-center gap-3 px-8 py-4 bg-gray-200 text-gray-800 rounded-2xl font-semibold text-lg transition-all duration-300 shadow-lg"
+              className="group flex items-center gap-3 px-8 py-4 bg-gray-200 hover:bg-zinc-300 text-gray-800 rounded-2xl font-semibold text-lg transition-all duration-300 shadow-lg"
             >
               <RotateCcw className="w-5 h-5 group-hover:rotate-180 transition-transform duration-500" />
               Reset

@@ -20,8 +20,8 @@ export default function ContinentCircle({ population }: { population: number }) 
 
   return (
     <div className="glass-backdrop rounded-3xl p-6 shadow-2xl border border-white/10 backdrop-blur-xl">
-      <h3 className="text-xl font-semibold mb-4 text-center bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-pink-500">
-        Population by Continent
+      <h3 className="text-xl font-semibold mb-4 text-center text-gray-900">
+        Population by Continents
       </h3>
       <ResponsiveContainer width="100%" height={260}>
         <PieChart>
