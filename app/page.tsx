@@ -3,16 +3,43 @@ import { useEffect, useRef, useState } from "react";
 import PopulationCounter from "./components/PopulationCounter";
 import ControlPanel from "./components/ControlPanel";
 import EventButtons from "./components/EventButtons";
+import toast from "react-hot-toast";
 
 export default function Home() {
 
-  const [population, setPopulation] = useState(8000000000);
+  const [population, setPopulation] = useState(8201000000);
   const [birthRate, setBirthRate] = useState(4);
   const [deathRate, setDeathRate] = useState(2);
   const [migrationRate, setMigrationRate] = useState(1);
   const [running, setRunning] = useState(true);
 
   const lastUpdate = useRef(Date.now());
+  const lastBillion = useRef(Math.floor(population / 1e9));
+
+  //Toast logic
+  useEffect(() => {
+    const currentBillion = Math.floor(population / 1e9);
+    if ( currentBillion > lastBillion.current) {
+      lastBillion.current = currentBillion;
+      toast.success(
+        <div className="flex items-center gap-3">
+          <span className="2xl"> 🚀 </span>
+          <div>
+            <strong> {currentBillion} Billion  </strong> People !!!
+            <br />
+            <span className="text-sm opacity-80">
+              {new Date().toLocaleDateString(undefined, {
+                year: "numeric",
+                month: 'short',
+                day: "numeric",
+              })}
+            </span>
+          </div>
+        </div>
+        // {duration: 5000, icon : false}
+      )
+    }
+  }, [population]);
 
   useEffect(() => {
     if(!running) return;
@@ -34,6 +61,7 @@ export default function Home() {
     setDeathRate(2);
     setMigrationRate(1);
     setRunning(true);
+    lastBillion.current = 8;
   }
 
   return (
