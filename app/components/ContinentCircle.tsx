@@ -1,12 +1,12 @@
 import { useMemo } from "react";
-import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
 const CONTINENTS = [
-  { name: "Asia", share: 0.59, color: "#8b5cf6" },
-  { name: "Africa", share: 0.18, color: "#10b981" },
-  { name: "Europe", share: 0.09, color: "#3b82f6" },
-  { name: "Americas", share: 0.13, color: "#f59e0b" },
-  { name: "Oceania", share: 0.01, color: "#ef4444" },
+  { name: "Oceania", share: 0.6, color: "#ef4444" },
+  { name: "Europe", share: 9, color: "#3b82f6" },
+  { name: "Africa", share: 18.8, color: "#10b981" },
+  { name: "Americas", share:12.8 , color: "#f59e0b" },
+  { name: "Asia", share: 59.4, color: "#8b5cf6" },
 ];
 
 export default function ContinentCircle({ population }: { population: number }) {
@@ -50,7 +50,6 @@ export default function ContinentCircle({ population }: { population: number }) 
               borderRadius: "8px",
             }}
           />
-          <Legend verticalAlign="bottom" height={36} />
         </PieChart>
       </ResponsiveContainer>
     </div>

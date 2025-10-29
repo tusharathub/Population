@@ -3,7 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import PopulationCounter from "./components/PopulationCounter";
 import ControlPanel from "./components/ControlPanel";
 import EventButtons from "./components/EventButtons";
-import toast from "react-hot-toast";
+import ContinentCircle from "./components/ContinentCircle";
+import { Pause, Play, RotateCcw } from "lucide-react";
 
 export default function Home() {
 
@@ -16,34 +17,9 @@ export default function Home() {
   const lastUpdate = useRef(Date.now());
   const lastBillion = useRef(Math.floor(population / 1e9));
 
-  //Toast logic
-  useEffect(() => {
-    const currentBillion = Math.floor(population / 1e9);
-    if ( currentBillion > lastBillion.current) {
-      lastBillion.current = currentBillion;
-      toast.success(
-        <div className="flex items-center gap-3">
-          <span className="2xl"> 🚀 </span>
-          <div>
-            <strong> {currentBillion} Billion  </strong> People !!!
-            <br />
-            <span className="text-sm opacity-80">
-              {new Date().toLocaleDateString(undefined, {
-                year: "numeric",
-                month: 'short',
-                day: "numeric",
-              })}
-            </span>
-          </div>
-        </div>
-        // {duration: 5000, icon : false}
-      )
-    }
-  }, [population]);
-
   useEffect(() => {
     if(!running) return;
-
+       
     const interval = setInterval(() => {
       const now = Date.now();
       const elapsedSeconds = (now - lastUpdate.current) / 1000;
@@ -64,39 +40,91 @@ export default function Home() {
     lastBillion.current = 8;
   }
 
-  return (
-   <main className="min-h-screen bg-linear-to-b from-gray-900 to-black text-white flex flex-col md:flex-row items-center justify-center p-6 gap-8">
-    <PopulationCounter population={population}/>
-    <div className="flex flex-col gap-6">
-    <ControlPanel
-    birthRate={birthRate}
-    deathRate={deathRate}
-    migrationRate={migrationRate}
-    setBirthRate={setBirthRate}
-    setDeathRate={setDeathRate}
-    setMigrationRate={setMigrationRate}
-    />
-    <EventButtons
-    setBirthRate={setBirthRate}
-    setDeathRate={setDeathRate}
-    setMigrationRate={setMigrationRate}
-    setPopulation={setPopulation}
-    />
+ return (
+  <main className="min-h-screen bg-gray-100 text-white overflow-hidden relative">
+
+    <div className="relative z-10 container mx-auto px-4 py-8">
+      <header className="text-center mb-10">
+        <h1 className="text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gray-900 drop-shadow-lg">
+          World Population Simulator
+        </h1>
+        <p className="mt-3 text-lg text-gray-800">Real-time demographic simulation</p>
+      </header>
+
+      <div className="grid grid-cols-3 gap-8 max-w-7xl mx-auto">
+        {/* LEFT: Counter + Donut */}
+        <div className="space-y-6">
+          <div className="glass-backdrop rounded-3xl p-8 shadow-2xl border border-white/10 backdrop-blur-xl">
+            <PopulationCounter population={population} />
+          </div>
+
+          <ContinentCircle population={population} />
+        </div>
+
+        {/* RIGHT: Controls & Events  */}
+        <div className="col-span-2 space-y-6">
+          <div className="glass-backdrop rounded-3xl p-6 shadow-2xl border border-white/10 backdrop-blur-xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Demographic Controls */}
+              <div>
+                <h2 className="text-2xl font-semibold mb-5 text-gray-800 text-center bg-clip-text ">
+                  Demographic Controls
+                </h2>
+                <ControlPanel
+                  birthRate={birthRate}
+                  setBirthRate={setBirthRate}
+                  deathRate={deathRate}
+                  setDeathRate={setDeathRate}
+                  migrationRate={migrationRate}
+                  setMigrationRate={setMigrationRate}
+                />
+              </div>
+
+              {/* Global Events */}
+              <div>
+                <h2 className="text-2xl font-semibold mb-5 text-center bg-clip-text text-gray-900">
+                  Global Events
+                </h2>
+                <EventButtons
+                  setBirthRate={setBirthRate}
+                  setDeathRate={setDeathRate}
+                  setMigrationRate={setMigrationRate}
+                  setPopulation={setPopulation}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex justify-center gap-4 mt-6">
+            <button
+              onClick={() => setRunning(!running)}
+              className={"group flex items-center  gap-3 px-8 py-4 rounded-2xl bg-gray-200 text-gray-800 font-semibold text-lg transition-all duration-300 shadow-lg"}
+            >
+              {running ? (
+                <>
+                  <Pause className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                  Pause
+                </>
+              ) : (
+                <>
+                  <Play className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                  Continue
+                </>
+              )}
+            </button>
+
+            <button
+              onClick={handleReset}
+              className="group flex items-center gap-3 px-8 py-4 bg-gray-200 text-gray-800 rounded-2xl font-semibold text-lg transition-all duration-300 shadow-lg"
+            >
+              <RotateCcw className="w-5 h-5 group-hover:rotate-180 transition-transform duration-500" />
+              Reset
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-    <div className="flex gap-4 justify-center">
-      <button 
-      onClick={() => setRunning(!running)}
-      className="px-4 py-2 bg-blue-600 hover:bg-blue-800 rounded-xl"
-      >
-        {running ? "Pause" : "Continue"}
-      </button>
-      <button
-      onClick={handleReset}
-      className="px-4 py-2 bg-red-500 hover:bg-red-600 rounded-xl"
-      >
-        Reset
-      </button>
-    </div>
-   </main>
-  );
+  </main>
+);
 }
