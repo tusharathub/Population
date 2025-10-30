@@ -53,7 +53,7 @@ export default function Home() {
 
       <div className="grid grid-cols-3 gap-8 max-w-7xl mx-auto">
         {/* LEFT: Counter + Donut */}
-        <div className="space-y-6">
+        <div className="space-y-6 ">
           <div className="glass-backdrop rounded-3xl p-8 shadow-2xl border border-white/10 backdrop-blur-xl">
             <PopulationCounter population={population} />
           </div>
@@ -82,7 +82,7 @@ export default function Home() {
 
               {/* Global Events */}
               <div>
-                <h2 className="text-2xl font-semibold mb-5 text-center bg-clip-text text-gray-900">
+                <h2 className="text-2xl font-semibold mb-5 text-center bg-clip-text text-gray-900 ">
                   Global Events
                 </h2>
                 <EventButtons
@@ -99,7 +99,7 @@ export default function Home() {
           <div className="flex justify-center gap-4 mt-6">
             <button
               onClick={() => setRunning(!running)}
-              className={"group flex items-center gap-3 px-8 py-4 rounded-2xl bg-gray-200 hover:bg-zinc-300 text-gray-800 font-semibold text-lg transition-all duration-300 shadow-lg"}
+              className={"group flex items-center gap-3 px-8 py-4 rounded-2xl bg-gray-200 hover:bg-zinc-300 text-gray-800 font-semibold text-lg transition-all duration-300 shadow-lg cursor-pointer"}
             >
               {running ? (
                 <>
@@ -116,9 +116,9 @@ export default function Home() {
 
             <button
               onClick={handleReset}
-              className="group flex items-center gap-3 px-8 py-4 bg-gray-200 hover:bg-zinc-300 text-gray-800 rounded-2xl font-semibold text-lg transition-all duration-300 shadow-lg"
+              className="group flex items-center gap-3 px-8 py-4 bg-gray-200 hover:bg-zinc-300 text-gray-800 rounded-2xl font-semibold text-lg transition-all duration-300 shadow-lg cursor-pointer"
             >
-              <RotateCcw className="w-5 h-5 group-hover:rotate-180 transition-transform duration-500" />
+              <RotateCcw className="w-5 h-5 group-hover:rotate-180 transition-transform duration-500 " />
               Reset
             </button>
 

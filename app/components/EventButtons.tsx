@@ -14,7 +14,7 @@ interface ButtonProps {
 
 export default function EventButtons ({setBirthRate, setDeathRate, setMigrationRate, setPopulation} : Props) {
     const HanldeBabyBoom = () => setBirthRate((p) => p + 100000);
-    const HanldePandemic = () => setDeathRate((d) => d + 1000);
+    const HanldePandemic = () => setDeathRate((d) => d + 10000);
     const HanldeColonizeMars = () => setMigrationRate((m) => m - 100000);
     const HandleDisaster = () => setPopulation((p) => p* 0.9);
 
@@ -33,7 +33,7 @@ function Button({label, onClick} : ButtonProps) {
         <div>
             <button 
             onClick={onClick}
-            className="bg-gray-200 text-gray-800 hover:bg-zinc-300 rounded-xl px-3 py-2 text-sm font-medium transition">
+            className="bg-gray-200 text-gray-800 hover:bg-zinc-300 rounded-xl px-3 py-2 text-sm font-medium transition cursor-pointer">
                 {label}
             </button>
         </div>
