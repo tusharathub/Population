@@ -13,23 +13,34 @@ export default function Home() {
   const [deathRate, setDeathRate] = useState(2);
   const [migrationRate, setMigrationRate] = useState(1);
   const [running, setRunning] = useState(true);
+  const [isExtinct, setIsExtinct] = useState(false)
 
   const lastUpdate = useRef(Date.now());
   const lastBillion = useRef(Math.floor(population / 1e9));
 
   useEffect(() => {
-    if(!running) return;
+    if(!running || isExtinct) return;
        
     const interval = setInterval(() => {
       const now = Date.now();
       const elapsedSeconds = (now - lastUpdate.current) / 1000;
       lastUpdate.current = now;
       const delta = (birthRate - deathRate + migrationRate) * elapsedSeconds;
-      setPopulation((p) => p + delta);
-    })
+      setPopulation((p) => {
+        const newPopulation = p + delta;
+
+        if(newPopulation <= 0) {
+          clearInterval(interval);
+          setIsExtinct(true);
+          setRunning(false);
+          return 0;
+        }
+        return newPopulation
+      })
+    }, 1000)
 
     return () => clearInterval(interval);
-  }, [birthRate, deathRate, running, migrationRate]);
+  }, [birthRate, deathRate, running, migrationRate, isExtinct]);
 
   const handleReset = () => {
     setPopulation(8000000000);
@@ -37,7 +48,9 @@ export default function Home() {
     setDeathRate(2);
     setMigrationRate(1);
     setRunning(true);
+    setIsExtinct(false);
     lastBillion.current = 8;
+    lastUpdate.current = Date.now();
   }
 
  return (
@@ -51,6 +64,19 @@ export default function Home() {
         <p className="mt-3 text-3xl text-gray-800">Real-time demographic simulation</p>
       </header>
 
+      {isExtinct ? (
+             <div className="flex flex-col items-center justify-center mt-24 text-center space-y-6">
+            <p className="text-4xl font-bold text-red-600">
+              💀 You wiped out humanity :/
+            </p>
+            <button
+              onClick={handleReset}
+              className="px-8 py-4 text-gray-900 cursor-pointer font-semibold text-lg transition-all duration-300 shadow-lg"
+            >
+              Restart Simulation
+            </button>
+          </div>
+      ) : (
       <div className="grid grid-cols-3 gap-8 max-w-7xl mx-auto">
         {/* LEFT: Counter + Donut */}
         <div className="space-y-6 ">
@@ -131,6 +157,8 @@ export default function Home() {
           </div>
         </div>
       </div>
+      )}
+
     </div>
   </main>
 );
