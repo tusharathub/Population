@@ -14,3 +14,5 @@ Trigger fun global events like pandemics or baby booms
 
 Pause, reset, or completely wipe out humanity (if that’s your thing)
 
+## Why I built This
+Because i was bored and this project sounds fun
