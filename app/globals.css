@@ -1,26 +1,217 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&family=Oswald:wght@300;400;600&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0d0d0c;
+  --foreground: #cccccc;
+  --color-rust: #c25e1a;
+  --color-rust-hover: #e07a1d;
+  --color-steel: #2e2e2a;
+  --color-iron-border: #3e3e38;
+  --color-amber-glow: #e07a1d;
+  --font-hud-header: 'Bebas Neue', sans-serif;
+  --font-hud-mono: 'Share Tech Mono', monospace;
+  --font-hud-text: 'Oswald', sans-serif;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-hud-text), sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  /* Dark vignette background overlay over the apocalypse_bg image */
+  background-image: linear-gradient(rgba(13, 13, 11, 0.5), rgba(13, 13, 11, 0.85)), url('/apocalypse_bg.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(18, 18, 16, 0.9);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-steel);
+  border-radius: 4px;
+  border: 1px solid var(--color-iron-border);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(92, 85, 76, 0.9);
+}
+
+/* Metal Panel HUD Component */
+.metal-panel {
+  background-color: #1a1a17;
+  border: 2px solid #3c3c36;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.85), 0 10px 25px rgba(0, 0, 0, 0.9);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Panel Header Style */
+.metal-panel-header {
+  font-family: var(--font-hud-header);
+  letter-spacing: 0.08em;
+  font-size: 1.3rem;
+  color: #e5e7eb;
+  border-bottom: 1px solid rgba(92, 85, 76, 0.35);
+}
+
+/* Distressed font styles */
+.font-bebas {
+  font-family: var(--font-hud-header);
+}
+
+.font-share-mono {
+  font-family: var(--font-hud-mono);
+}
+
+/* Rusted amber glows */
+.amber-glow {
+  color: var(--color-amber-glow);
+  text-shadow: 0 0 12px rgba(224, 122, 29, 0.5), 0 0 2px rgba(224, 122, 29, 0.8);
+}
+
+/* Heavy Warning Rust Buttons */
+.btn-rust {
+  background-color: var(--color-rust);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.2), 0 4px 10px rgba(0, 0, 0, 0.6);
+  font-family: var(--font-hud-header);
+  letter-spacing: 0.08em;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+}
+
+.btn-rust:hover {
+  background-color: var(--color-rust-hover);
+  box-shadow: inset 0 1px 4px rgba(255, 255, 255, 0.3), 0 0 12px rgba(224, 122, 29, 0.5), 0 4px 12px rgba(0,0,0,0.6);
+  transform: translateY(-1px);
+}
+
+.btn-rust:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* Slate Military Steel Buttons */
+.btn-steel {
+  background-color: #2b2b27;
+  color: #d1d5db;
+  border: 1px solid #3c3c36;
+  box-shadow: inset 0 1px 2px rgba(255,255,255,0.05), 0 4px 8px rgba(0,0,0,0.5);
+  font-family: var(--font-hud-header);
+  letter-spacing: 0.08em;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+}
+
+.btn-steel:hover {
+  background-color: #3e3e38;
+  color: #ffffff;
+  border-color: #4e4e46;
+  box-shadow: 0 0 8px rgba(92, 85, 76, 0.4), 0 4px 10px rgba(0, 0, 0, 0.6);
+  transform: translateY(-1px);
+}
+
+.btn-steel:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* Custom styled inputs */
+.hud-input-box {
+  background-color: #0e0e0c;
+  border: 1px solid #3c3c36;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.85);
+  border-radius: 3px;
+}
+
+/* Corner Rivets (Screws) */
+.rivet {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #3c3c36;
+  border: 1px solid #0d0d0c;
+  box-shadow: inset 1px 1px 1px rgba(255,255,255,0.08), 1px 1px 2px rgba(0,0,0,0.85);
+  z-index: 10;
+}
+.rivet-tl { top: 5px; left: 5px; }
+.rivet-tr { top: 5px; right: 5px; }
+.rivet-bl { bottom: 5px; left: 5px; }
+.rivet-br { bottom: 5px; right: 5px; }
+
+/* Custom range sliders */
+input[type="range"].hud-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 5px;
+  background: #0e0e0c;
+  border: 1px solid #2e2e2a;
+  border-radius: 2px;
+  outline: none;
+}
+
+input[type="range"].hud-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--slider-color, #ffffff);
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 8px var(--slider-color, #ffffff);
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+input[type="range"].hud-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+input[type="range"].hud-slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--slider-color, #ffffff);
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 8px var(--slider-color, #ffffff);
+  cursor: pointer;
+}
+
+/* Glitch effects */
+@keyframes hud-flicker {
+  0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% { opacity: 0.99; filter: none; }
+  20%, 21.999%, 63%, 63.999%, 65%, 69.999% { opacity: 0.4; filter: contrast(1.5); }
+}
+
+.hud-flicker {
+  animation: hud-flicker 5s infinite;
+}
+
+/* Pulse Live dot */
+@keyframes live-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.5; }
+}
+
+.live-pulse-dot {
+  animation: live-pulse 2s infinite ease-in-out;
 }

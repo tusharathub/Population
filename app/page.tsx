@@ -1,165 +1,202 @@
-"use client"
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import PopulationCounter from "./components/PopulationCounter";
+import ContinentCircle from "./components/ContinentCircle";
 import ControlPanel from "./components/ControlPanel";
 import EventButtons from "./components/EventButtons";
-import ContinentCircle from "./components/ContinentCircle";
-import { Github, Pause, Play, RotateCcw } from "lucide-react";
+import { Play, Pause, RotateCcw, Radio } from "lucide-react";
 
 export default function Home() {
-
   const [population, setPopulation] = useState(8201000000);
   const [birthRate, setBirthRate] = useState(4);
   const [deathRate, setDeathRate] = useState(2);
   const [migrationRate, setMigrationRate] = useState(1);
   const [running, setRunning] = useState(true);
-  const [isExtinct, setIsExtinct] = useState(false)
+  const [isExtinct, setIsExtinct] = useState(false);
 
   const lastUpdate = useRef(Date.now());
-  const lastBillion = useRef(Math.floor(population / 1e9));
 
   useEffect(() => {
-    if(!running || isExtinct) return;
-       
+    if (!running || isExtinct) return;
+
     const interval = setInterval(() => {
       const now = Date.now();
       const elapsedSeconds = (now - lastUpdate.current) / 1000;
       lastUpdate.current = now;
+
       const delta = (birthRate - deathRate + migrationRate) * elapsedSeconds;
+
       setPopulation((p) => {
         const newPopulation = p + delta;
 
-        if(newPopulation <= 0) {
+        if (newPopulation <= 0) {
           clearInterval(interval);
           setIsExtinct(true);
           setRunning(false);
           return 0;
         }
-        return newPopulation
-      })
-    }, 1000)
+        return newPopulation;
+      });
+    }, 1000);
 
     return () => clearInterval(interval);
   }, [birthRate, deathRate, running, migrationRate, isExtinct]);
 
+  const handleToggleRunning = () => {
+    if (!running) {
+      lastUpdate.current = Date.now();
+    }
+    setRunning(!running);
+  };
+
   const handleReset = () => {
-    setPopulation(8000000000);
+    setPopulation(8201000000);
     setBirthRate(4);
     setDeathRate(2);
     setMigrationRate(1);
     setRunning(true);
     setIsExtinct(false);
-    lastBillion.current = 8;
     lastUpdate.current = Date.now();
-  }
+  };
 
- return (
-  <main className="min-h-screen bg-gray-100 text-white overflow-hidden relative">
-
-    <div className="relative z-10 container mx-auto px-4 py-8">
-      <header className="text-center mb-10">
-        <h1 className="text-5xl mb-8 font-bold bg-clip-text text-transparent bg-gray-900 drop-shadow-lg">
+  return (
+    <main className="min-h-screen text-slate-300 font-hud-text flex flex-col justify-between p-4 md:p-6 max-w-7xl mx-auto space-y-5 select-none">
+      
+      {/* Header Block */}
+      <header className="flex flex-col space-y-1 py-1">
+        <h1 className="text-3xl md:text-4.5xl font-bebas tracking-wide text-slate-100 uppercase leading-none font-bold">
           World Population Simulator
         </h1>
-        <p className="mt-3 text-3xl text-gray-800">Real-time demographic simulation</p>
+        <p className="text-xs md:text-sm font-share-mono text-amber-600 uppercase tracking-widest font-bold">
+          Real-Time Demographic Simulation
+        </p>
       </header>
 
       {isExtinct ? (
-             <div className="flex flex-col items-center justify-center mt-24 text-center space-y-6">
-            <p className="text-4xl font-bold text-red-600">
-              💀 You wiped out humanity :/
+        /* Extinction HUD Screen */
+        <div className="flex-1 flex flex-col items-center justify-center py-16 text-center space-y-6 max-w-lg mx-auto">
+          <div className="metal-panel p-8 backdrop-blur-md shadow-2xl space-y-4 border-2 border-red-900/60 w-full relative">
+            {/* Rivets */}
+            <div className="rivet rivet-tl" />
+            <div className="rivet rivet-tr" />
+            <div className="rivet rivet-bl" />
+            <div className="rivet rivet-br" />
+            
+            <span className="text-5xl">💀</span>
+            <h2 className="text-3xl font-bebas font-extrabold text-red-500 tracking-wider uppercase animate-pulse">
+              System Failure: Extinction Detected
+            </h2>
+            <p className="text-xs font-share-mono text-slate-400 leading-relaxed">
+              Global population has crashed to zero. Demographic telemetry is terminated.
             </p>
+            <div className="h-[1px] bg-white/5 my-4" />
             <button
               onClick={handleReset}
-              className="px-8 py-4 text-gray-900 cursor-pointer font-semibold text-lg transition-all duration-300 shadow-lg"
+              className="w-full py-3 btn-rust font-bold text-xs uppercase tracking-widest cursor-pointer"
             >
-              Restart Simulation
+              Restart Simulation Protocol
             </button>
           </div>
+        </div>
       ) : (
-      <div className="grid grid-cols-3 gap-8 max-w-7xl mx-auto">
-        {/* LEFT: Counter + Donut */}
-        <div className="space-y-6 ">
-          <div className="glass-backdrop rounded-3xl p-8 shadow-2xl border border-white/10 backdrop-blur-xl">
-            <PopulationCounter population={population} />
-          </div>
-
-          <ContinentCircle population={population} />
-        </div>
-
-        {/* RIGHT: Controls & Events  */}
-        <div className="col-span-2 space-y-6">
-          <div className="glass-backdrop rounded-3xl p-6 shadow-2xl border border-white/10 backdrop-blur-xl">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Demographic Controls */}
-              <div>
-                <h2 className="text-2xl font-semibold mb-5 text-gray-800 text-center bg-clip-text ">
-                  Demographic Controls
-                </h2>
-                <ControlPanel
-                  birthRate={birthRate}
-                  setBirthRate={setBirthRate}
-                  deathRate={deathRate}
-                  setDeathRate={setDeathRate}
-                  migrationRate={migrationRate}
-                  setMigrationRate={setMigrationRate}
-                />
-              </div>
-
-              {/* Global Events */}
-              <div>
-                <h2 className="text-2xl font-semibold mb-5 text-center bg-clip-text text-gray-900 ">
-                  Global Events
-                </h2>
-                <EventButtons
-                  setBirthRate={setBirthRate}
-                  setDeathRate={setDeathRate}
-                  setMigrationRate={setMigrationRate}
-                  setPopulation={setPopulation}
-                />
-              </div>
+        /* Correct grid widths matching columns */
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
+          
+          {/* Column 1 (Width: 5/12) -> Population Counter + Continent Circle */}
+          <div className="lg:col-span-5 flex flex-col space-y-5">
+            {/* Current World Population Box */}
+            <div className="metal-panel p-5 relative">
+              {/* Rivets */}
+              <div className="rivet rivet-tl" />
+              <div className="rivet rivet-tr" />
+              <div className="rivet rivet-bl" />
+              <div className="rivet rivet-br" />
+              
+              <PopulationCounter
+                population={population}
+                birthRate={birthRate}
+                deathRate={deathRate}
+                migrationRate={migrationRate}
+              />
+            </div>
+            
+            {/* Continent Circle Card */}
+            <div className="flex-grow">
+              <ContinentCircle population={population} />
             </div>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex justify-center gap-4 mt-6">
-            <button
-              onClick={() => setRunning(!running)}
-              className={"group flex items-center gap-3 px-8 py-4 rounded-2xl bg-gray-200 hover:bg-zinc-300 text-gray-800 font-semibold text-lg transition-all duration-300 shadow-lg cursor-pointer"}
-            >
-              {running ? (
-                <>
-                  <Pause className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                  Pause
-                </>
-              ) : (
-                <>
-                  <Play className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                  Continue
-                </>
-              )}
-            </button>
-
-            <button
-              onClick={handleReset}
-              className="group flex items-center gap-3 px-8 py-4 bg-gray-200 hover:bg-zinc-300 text-gray-800 rounded-2xl font-semibold text-lg transition-all duration-300 shadow-lg cursor-pointer"
-            >
-              <RotateCcw className="w-5 h-5 group-hover:rotate-180 transition-transform duration-500 " />
-              Reset
-            </button>
-
-            <div className="text-gray-600 hover:text-purple-600 transition duration-300 font-medium">
-              <a href="https://github.com/tusharathub" target="_blank" >
-              <Github className="text-gray-800 w-13 h-11 mt-2 rounded-xl " />
-              Connect
-              </a>
-            </div>
+          {/* Column 2 (Width: 4/12) -> Simulation Controls */}
+          <div className="lg:col-span-4 flex flex-col">
+            <ControlPanel
+              birthRate={birthRate}
+              setBirthRate={setBirthRate}
+              deathRate={deathRate}
+              setDeathRate={setDeathRate}
+              migrationRate={migrationRate}
+              setMigrationRate={setMigrationRate}
+            />
           </div>
+
+          {/* Column 3 (Width: 3/12) -> Global Events */}
+          <div className="lg:col-span-3 flex flex-col">
+            <EventButtons
+              setBirthRate={setBirthRate}
+              setDeathRate={setDeathRate}
+              setMigrationRate={setMigrationRate}
+              setPopulation={setPopulation}
+            />
+          </div>
+
         </div>
-      </div>
       )}
 
-    </div>
-  </main>
-);
+      {/* Control Buttons Footer Bar */}
+      <footer className="flex items-center space-x-3 pt-3 border-t border-white/5">
+        
+        {/* Play/Pause Button */}
+        {!isExtinct && (
+          <button
+            onClick={handleToggleRunning}
+            className="flex items-center space-x-2 px-8 py-3 btn-rust font-bold text-sm uppercase tracking-wider cursor-pointer"
+          >
+            {running ? (
+              <>
+                <Pause className="h-4 w-4 fill-white" />
+                <span>Pause</span>
+              </>
+            ) : (
+              <>
+                <Play className="h-4 w-4 fill-white" />
+                <span>Continue</span>
+              </>
+            )}
+          </button>
+        )}
+
+        {/* Reset Button */}
+        <button
+          onClick={handleReset}
+          className="flex items-center space-x-2 px-6 py-3 btn-steel font-bold text-sm uppercase tracking-wider cursor-pointer"
+        >
+          <RotateCcw className="h-4 w-4" />
+          <span>Reset</span>
+        </button>
+
+        {/* Connect Button */}
+        <a
+          href="https://github.com/tusharathub"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center space-x-2 px-6 py-3 btn-steel font-bold text-sm uppercase tracking-wider cursor-pointer"
+        >
+          <Radio className="h-4 w-4" />
+          <span>Connect</span>
+        </a>
+
+      </footer>
+
+    </main>
+  );
 }
